@@ -15,24 +15,44 @@ const { findById } = require('../model/userModels');
  router.post('/addfavorites',passport.authenticate("jwt", { session: false }), async(req,res)=>{
    
 let user= await userModel.findOne({_id:req.user.id}) ;
-
+console.log(user)
 const myId=req.body.itineraryId
 let result= user.favorites.filter(element=>element.itineraryId==myId)
 console.log(result.length)
 if(result.length!==0){
   res.status(400).send('User already liked')
   }
+  
   await itineraryModels.findById({_id:req.body.itineraryId})
  .then(itin=>{
-console.log(itin.cityId)
+ 
   user.favorites.push({title:itin.title,itineraryId:itin._id,cityId:itin.cityId})
-  res.send(user)
+
+  res.send(user.favorites)
   user.save()
  })
- .catch(err=>res.json({errors:err.message}))
- 
+
+.catch(err=>res.json({errors:err.message}))
+
 });
 
+  router.post('/removefav/:id',passport.authenticate("jwt", { session: false }), async(req,res)=>{
+   
+   await userModel.findById({_id:req.user.id})
+    .then(user=>{
+     let result=user.favorites.filter(favorite=>favorite.itineraryId==req.params.id)
+     console.log(result)
+     console.log(user.favorites)
+     
+     let indextoremove=user.favorites.map(favorite=>favorite.itineraryId).indexOf(req.params.id);
+      user.favorites.splice(indextoremove,1)
+      user.save()
+      res.send(user.favorites)
+
+
+    })
+
+  });
 
 
 
@@ -110,7 +130,15 @@ router.post('/register',[
     }
 })
 
+router.get('/getfav',passport.authenticate("jwt", { session: false }), async(req,res)=>{
 
+  await userModel.findById({_id:req.user.id})
+  .then(user=>res.send(user.favorites))
+
+  
+}
+
+)
 
 
 
