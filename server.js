@@ -33,4 +33,5 @@ app.use('/itineraries', require('./routes/itineraries'))
 app.use('/activities',require('./routes/activities'))
 app.use('/users',require('./routes/user'))
 app.use('/auth',require('./routes/auth'))
+app.use('/comments',require('./routes/comments'))
 
