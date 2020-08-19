@@ -7,7 +7,7 @@ const activitySchema = new mongoose.Schema({
         
     },
     pictures: {
-        type: Array,
+        type: String,
         
     },
     itineraryId: {

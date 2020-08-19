@@ -10,6 +10,7 @@ router.get('/test', (req, res) => {
 
 router.get('/all',
     (req, res) => {
+       console.log("city routes")
         cityModel.find({})
             .then(files => {
                 res.send(files)
