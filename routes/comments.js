@@ -12,7 +12,7 @@ router.post('/addcomments/:id',passport.authenticate("jwt", { session: false }),
 
     try {
         let user= await userModel.findById(req.user.id).select('-password')
-        
+        console.log('test'+user)
         comment=new commentsModels({
             user:user._id,
             username:user.name,
